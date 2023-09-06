@@ -1,0 +1,27 @@
+ID Tabel: 1
+Nume Tabel: STUDENT2 Coloanele sunt: FACULTATE_STUDENT, ID_STUDENT, 
+
+Nume coloana: FACULTATE_STUDENT
+ Coloana este de tipul: text
+ Valorile coloanei: 
+  CSIE
+  FABIZ
+  CSIE
+  FABIZ
+  CSIE
+  CSIE
+  FABIZ
+  CSIE
+  FABIZ
+
+Nume coloana: ID_STUDENT
+ Coloana este de tipul: number
+ Valorile coloanei: 
+  1666
+  1666
+  1666
+  2
+  7
+  2
+  13
+  13
