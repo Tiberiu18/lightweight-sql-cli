@@ -9,9 +9,9 @@ This implementation offers a basic solution for database management, enabling us
   - Integer
   - Float
 
-- **Project Files:** Within the `SqlProject` folder, ensure the presence of two files:
-  - `comenzi.txt` (Accepts only `CREATE TABLE` commands)
-  - `comenzi2.txt` (Accepts all types of commands)
+- **Project Files:** Within the `input` folder, ensure the presence of two files:
+  - `comenziCreate.txt` (Accepts only `CREATE TABLE` commands)
+  - `comenziAltele.txt` (Accepts all types of commands)
 
   To use these files, provide them as command-line arguments. 
 
