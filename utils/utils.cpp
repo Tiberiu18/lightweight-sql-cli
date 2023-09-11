@@ -43,7 +43,7 @@ void Utility::getFileNames(vector<string>* fileList)
 {
 	WIN32_FIND_DATA search_data;
 	memset(&search_data, 0, sizeof(WIN32_FIND_DATA));
-	string path = getPath() + "\\TABEL_*";
+	string path = getPath() + "\\binaryfiles" + "\\TABEL_* ";
 	reverseSlashes(path);
 	wstring wstrpath = s2ws(path);
 	LPCWSTR pth = wstrpath.c_str();

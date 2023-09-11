@@ -213,18 +213,17 @@ int main(int argc, char* argv[])
 			if (g1.verifyCreateTable() == true)
 			{
 				string table_name = "TABEL_" + g1.res2[4];
-				if (Utility::file_exists(table_name) == false)
+				string path = "binaryfiles/";
+				if (Utility::file_exists(path + table_name) == false)
 				{
 					try
 					{
-
-
 						Table* p = g1.createCols();
 						db.addTable(p);
 						if (count_CREATE >= nrCmds)
 							cout << db;
 						//FileHandling f1(db);
-						fstream f(table_name, ios::out);
+						fstream f(path + table_name, ios::out);
 						f1.writeToFile(f, db.getNrTables() - 1);
 						f.close();
 					}
@@ -339,25 +338,19 @@ int main(int argc, char* argv[])
 				ok = Table::isNumber(inp);
 				if (ok == true)
 				{
-					float x = stof(inp);
-					if (x == 1)
-					{
-						
+					int x = stof(inp);
+					switch (x) {
+					case 1:
 						mArray[0]->display();
-					}
-					else if (x == 2)
-					{
-						
+						break;
+					case 2:
 						mArray[1]->display();
-						
-					}
-					else if (x == 3)
-					{
+						break;
+					case 3:
 						mArray[2]->display();
-					}
-					else if (x == 4)
-					{
-						cin.ignore(); 
+						break;
+					case 4:
+						cin.ignore();
 						break;
 					}
 				}

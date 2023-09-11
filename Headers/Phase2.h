@@ -142,6 +142,9 @@ public:
 					f.write((char*)&t.tableID, intSz);
 					//Scriem descrierea coloanelor si numarul de coloane
 					f.write((char*)&t.nrCols, intSz);
+					if (f.fail()) {
+						cerr << "Write operation failed." << endl;
+					}
 					if (t.cols != nullptr && t.nrCols > 0)
 					{
 						for (int i = 0; i < t.nrCols; i++)
@@ -336,13 +339,14 @@ public:
 		if (count < 0)
 			count = 0;
 		string fileName = "SELECT_" + to_string(count) + ".txt";
+		string path = "output\\";
 
 		for (auto itr = db.tables.begin(); itr != db.tables.end(); itr++)
 		{
 			if ((*itr)->getTableName() == tableName)
 			{
 				// apelez ofstream& din Table
-				fstream f(fileName, ios::out);
+				fstream f(path + fileName, ios::out);
 				operator<<(f, **itr);
 				f.close();
 				count++;

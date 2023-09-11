@@ -407,7 +407,7 @@ ostream& operator<<(ostream& OUT, const Table& t) {
 		for (int i = 0; i < t.nrCols; i++)
 			OUT << *t.cols[i]; 
 	}
-	OUT << "********************** PRINTARE FINALIZATA ********************** ";
+	OUT << "********************** PRINTARE FINALIZATA ********************** \n";
 	return OUT;
 }
 
