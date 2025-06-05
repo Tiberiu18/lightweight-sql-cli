@@ -1,103 +1,107 @@
-# Database Management Implementation Guide
+# Database Management System Implementation Guide
 
-This implementation offers a basic solution for database management, enabling users to employ SQL commands to create and manage tables.
+## Description
+This project implements a simple DBMS that lets you execute a limited set of SQL commands to create and manage tables. Its main purpose is to help you understand object-oriented programming concepts.
 
-## Features:
+## Requirements
+- C++ compiler compatible with the C++17 standard (e.g., `g++` or Visual Studio)
+- Windows or Linux operating system
+- `comenziCreate.txt` and `comenziAltele.txt` must exist in the `input` directory
 
-- **Data Types Supported:** 
-  - Text
-  - Integer
-  - Float
+## Build Steps
+1. Open a console inside the project directory.
+2. Compile the sources using a C++17 compiler. Example for `g++`:
+   ```bash
+   g++ main.cpp Classes/*.cpp utils/utils.cpp -IHeaders -std=c++17 -o dbms
+   ```
+3. Run the application while specifying the command files:
+   ```bash
+   ./dbms input/comenziCreate.txt input/comenziAltele.txt
+   ```
 
-- **Project Files:** Within the `input` folder, ensure the presence of two files:
-  - `comenziCreate.txt` (Accepts only `CREATE TABLE` commands)
-  - `comenziAltele.txt` (Accepts all types of commands)
+## Command Examples
+After launching the program, you can run commands such as:
+- `CREATE TABLE STUDENT((Height, integer, 5, 190), (Faculty, text, 25, CSIE))`
+- `INSERT INTO STUDENT VALUES (172, MAN)`
+- `DELETE FROM STUDENT WHERE HEIGHT = 172`
+- `UPDATE STUDENT SET HEIGHT = 180 WHERE HEIGHT = 172`
+- `--showdatabase`
 
-  To use these files, provide them as command-line arguments. 
+### Remarks
+1. If compilation errors occur, try disabling SDL checks (they may be triggered by `strcpy`).
+2. The project is still under development and may contain bugs. Its role is mainly educational.
 
+## Supported Data Types
+- Text
+- Integer
+- Float
 
-### Disclaimers:
-
-1. If compile errors arise, disable SDL checks. This might be due to the `strcpy` function.
-2. The project is still in development and might contain bugs. Its primary purpose is to facilitate understanding of OOP concepts.
-
-## Accepted SQL Commands:
+## Supported SQL Commands
 
 1. **CREATE TABLE**
-
-CREATE TABLE table_name ((Column1_name, type, dimension, default_value), ...)
-
-
-**Example:** 
-CREATE TABLE STUDENT((Height, integer, 5, 190), (Faculty, text, 25, CSIE))
-
-
-**Observations:**
-- `default_value` shouldn't have white spaces (e.g., John_Smith instead of John Smith).
-- `dimension` defines the maximum length for `type`. For `integer`, it refers to the number of figures. For `text`, it indicates maximum characters.
-- Tables with duplicate names are not allowed.
-- The command creates a binary file named `TABEL_table_name`.
+   ```
+   CREATE TABLE table_name ((Column_Name, type, dimension, default_value), ...)
+   ```
+   **Example:**
+   ```
+   CREATE TABLE STUDENT((Height, integer, 5, 190), (Faculty, text, 25, CSIE))
+   ```
+   **Observations:**
+   - `default_value` shouldn't contain spaces (e.g., `John_Smith`).
+   - `dimension` defines the maximum length for `type`. For `integer` it is the number of digits; for `text` it is the maximum number of characters.
+   - Tables with duplicate names are not allowed.
+   - The command creates a binary file named `TABEL_table_name`.
 
 2. **DROP TABLE**
-
-DROP TABLE table_name
-
-
-This command removes the specified table and its corresponding binary file.
+   ```
+   DROP TABLE table_name
+   ```
+   Removes the specified table and its corresponding binary file.
 
 3. **DISPLAY TABLE**
+   ```
+   DISPLAY TABLE table_name
+   ```
+   Currently equivalent to `SELECT ALL FROM table_name`.
 
-DISPLAY TABLE table_name
-
-
-Currently, this is analogous to `SELECT ALL FROM table_name`.
-
-**Observation:** 
-This command creates a text file named `SELECT_x`, where x is a number, containing console output.
+   **Observation:** This command creates a text file `SELECT_x` containing the console output.
 
 4. **INSERT INTO**
-
-INSERT INTO table_name VALUES(...)
-
-
-**Example:** 
-INSERT INTO STUDENT VALUES (172, MAN)
-
-
-**Observations:** 
-- Ensure that the values' types match the column's order and type.
+   ```
+   INSERT INTO table_name VALUES(...)
+   ```
+   **Example:**
+   ```
+   INSERT INTO STUDENT VALUES (172, MAN)
+   ```
+   **Observation:** Make sure the value types follow the columns' order and type.
 
 5. **DELETE FROM**
-
-DELETE FROM table_name WHERE Column_Name = Value
-
-
-**Example:** 
-DELETE FROM STUDENT WHERE HEIGHT = 172
-
+   ```
+   DELETE FROM table_name WHERE Column_Name = Value
+   ```
+   **Example:**
+   ```
+   DELETE FROM STUDENT WHERE HEIGHT = 172
+   ```
 
 6. **UPDATE**
-
-UPDATE table_name SET Column_Name = VALUE WHERE Column_Name = Value
-
-
-**Example:** 
-UPDATE STUDENT SET HEIGHT = 180 WHERE HEIGHT = 172
-
+   ```
+   UPDATE table_name SET Column_Name = VALUE WHERE Column_Name = Value
+   ```
+   **Example:**
+   ```
+   UPDATE STUDENT SET HEIGHT = 180 WHERE HEIGHT = 172
+   ```
 
 7. **--showdatabase**
-
-When executed, it displays all existing tables.
+   Shows all existing tables.
 
 8. **IMPORT**
-
-This option allows importing data into a table from a CSV file.
-
-**Example:** 
-Import student csvfile.csv
-
-
-**Observations:** 
-- Only the comma (`,`) separator is permitted.
-- Certain characters are disallowed, such as: `:/.;[]()*&^%$#@!`?<>-_+=`.
-- Ensure that the number of values is a multiple of the table's column count.
+   ```
+   Import table_name csvfile.csv
+   ```
+   **Observations:**
+   - Only the comma (`,`) separator is accepted.
+   - The following characters are disallowed: `:/.;[]()*&^%$#@!`?<>-_+=`.
+   - The number of values must be a multiple of the table's column count.
