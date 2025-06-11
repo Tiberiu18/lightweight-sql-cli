@@ -6,140 +6,14 @@
 #include "utils/utils.h"
 #include "Headers/GetCmdType.h"
 #include "Headers/Phase2.h"
+#include "Headers/Menu.h"
 #include <regex>
 #include <vector>
 #include <stack>
 #include <set>
+#include <memory>
 #include <io.h>
 using namespace std;
-void show();
-
-// implementam clasa MENU
-// aici vom face cerinta cu cele 2 metode virtuale
-// putem sa selectam 2optiuni ->1) listeaza numele tabelelor din sistem
-
-
-
-//Menu1 listeaza numele tabelelor din sistem, Menu2 listeaza numarul inregistrarilor din fiecare tabel 
-class Menu1
-{
-protected:
-	//int choice; // 1, 2 => daca baga choice 1, construieste Menu1, daca bafga choice2, construieste Menu2
-	Database& db; // tine o referinta la baza de date 	
-public:
-	Menu1(Database& db)
-		: db(db)
-	{
-
-	}
-	virtual void display()
-	{
-		cout << "\nTables are: " << endl;
-		for (auto itr = db.tables.begin(); itr != db.tables.end(); itr++)
-		{
-			cout <<(*itr)->getTableName() << endl;
-		}
-		cout << endl;
-	}
-	virtual void displayMenuType()
-	{
-		cout << "\nMenu is: Menu1\n";
-	}
-
-};
-
-class Menu2 : public Menu1
-{
-protected:
-	map<string, int> output; // tine numele tabelelor si nr de inregistrari al tabelului respectiv
-public:
-	Menu2(Database& db)
-		: Menu1(db)
-	{
-	}
-	virtual void calc()
-	{
-		string table_name;
-		int nr_rows = 0;
-		for (auto itr = db.tables.begin(); itr != db.tables.end(); itr++)
-		{
-			table_name = (*itr)->getTableName();
-			output[table_name] = 0;
-			for (int j = 0; j < (*itr)->getNrCols(); j++)
-			{
-				nr_rows = (*itr)->getColsArr()[j]->getRows();
-				if (output.find(table_name) != output.end())
-					output[table_name] = output[table_name] + nr_rows; // calculating the num of rows for each column in the table
-			}
-		}
-	}
-	void display()
-	{
-		calc();
-		map<string, int>::iterator itr;
-		cout << endl;
-		for (itr = output.begin(); itr != output.end(); itr++)
-		{
-			cout << "Table " << itr->first << " has " << itr->second << " rows." << endl;
-		}
-		if (output.size() == 0)
-			cout << " Nu exista niciun tabel in sistem.\n";
-	}
-	void displayMenuType()
-	{
-		cout << "\nMenu is: Menu2\n ";
-	}
-
-};
-
-class Menu3 : public Menu2
-{
-	int total_MEM = 0;
-public:
-	Menu3(Database& db)
-		: Menu2(db)
-	{
-	}
-	void calc()
-	{
-		this->total_MEM = 0;
-		string table_name;
-		int nr_rows = 0;
-		for (auto itr = db.tables.begin(); itr != db.tables.end(); itr++)
-		{
-			table_name = (*itr)->getTableName();
-
-			output[table_name] = (int)(*itr)->calcSize();
-			this->total_MEM += output[table_name];
-			if (output.find(table_name) != output.end())
-			{
-				output[table_name] = (int)(*itr)->calcSize();
-				this->total_MEM += output[table_name];
-			}
-			
-			
-		}
-	}
-	void display()
-	{
-		calc();
-		map<string, int>::iterator itr;
-		cout << endl;
-		if (output.size() == 0)
-			cout << " Nu exista niciun tabel in sistem.\n";
-		else
-		{
-			for (itr = output.begin(); itr != output.end(); itr++)
-			{
-				cout << "Table " << itr->first << " is " << itr->second << " bytes large." << endl;
-
-			}
-			cout << "Total memory occupied: " << this->total_MEM << endl << endl;
-		}
-		
-	}
-};
-
 
 void readME()
 {
@@ -179,7 +53,7 @@ int main(int argc, char* argv[])
 	string input;
 	bool ok = true;
 	Database db(1);
-	Menu1* mArray[] = { new Menu1(db), new Menu2(db), new Menu3(db) };
+        std::unique_ptr<Menu1> mArray[] = { std::make_unique<Menu1>(db), std::make_unique<Menu2>(db), std::make_unique<Menu3>(db) };
 	FileHandling f1(db);
 	f1.createExistingTables();
 	if (db.getNrTables() > 0)
@@ -369,7 +243,6 @@ int main(int argc, char* argv[])
 		
 	}
 	
-	for (int i = 0; i < 3; i++)
-		delete mArray[i];
+        // unique_ptr handles cleanup
 }
 
